@@ -25,6 +25,7 @@
 <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
     <h2 class="page-title">修改個人資料</h2>
     <hr class="botmargin-min">
+    @Html.Raw(ViewBag.EditSuccess)
 
     <!--Register Start-->
     @using (Html.BeginForm("Edit", "ForumMembers", FormMethod.Post, new { enctype = "multipart/form-data" }))

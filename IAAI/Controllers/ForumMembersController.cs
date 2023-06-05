@@ -230,6 +230,7 @@ namespace IAAI.Controllers
 
             ViewBag.TotalYear = totalMonths / 12;
             ViewBag.TotalMonth = totalMonths % 12;
+            ViewBag.EditSuccess = TempData["EditSuccess"] as string;
 
             return View(forumMember);
         }
@@ -239,6 +240,9 @@ namespace IAAI.Controllers
         public ActionResult Edit(ForumMember forumMember, string newPassword, string IsMembership, HttpPostedFileBase upfile)
         {
             string savePath = Server.MapPath("~/Upload/Membership/");
+
+            ViewBag.IsMembership = forumMember.Membership != null;
+            ViewBag.MembershipDownload = forumMember.Membership != null ? "<a href='" + Url.Content("~/Upload/Membership/" + forumMember.Membership) + "' download>下載會員證影本</a>" : null;
 
             if (ModelState.IsValid)
             {
@@ -291,6 +295,7 @@ namespace IAAI.Controllers
 
                 _db.Entry(forumMember).State = EntityState.Modified;
                 _db.SaveChanges();
+                TempData["EditSuccess"] = "<div style='background-color:rgba(173, 216, 230, 0.3);text-align:center; padding: 10px 0px; margin-bottom:30px'><h5 style='color: black; margin: 0; letter-spacing: 8px'>修改成功</h5></div>";
                 return RedirectToAction("Edit");
             }
             return View(forumMember);
