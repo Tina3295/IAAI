@@ -1,0 +1,81 @@
+﻿@model IAAI.Models.ViewModel.ForumLogin
+
+@{
+    ViewBag.Title = "會員登入";
+    Layout = "~/Views/Shared/Front_Layout.cshtml";
+}
+<section id="main-container" class="main-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                <div class="sidebar sidebar-right">
+                    <div class="widget">
+                        <h2 class="widget-title"><i class="fa fa-folder-open-o">&nbsp;</i>會員專區</h2>
+                        <ul class="arrow nav nav-tabs nav-stacked">
+                            <li><a href="#">會員登入</a></li>
+                        </ul>
+                    </div>
+                    <!-- Categories end -->
+                </div>
+                <!-- Sidebar end -->
+            </div>
+
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                <h2 class="page-title">會員登入</h2>
+                <hr class="botmargin-min">
+                <!--Login Start-->
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <h3 class="title-normal">請輸入您的帳號及密碼</h3>
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">帳　號：</label>
+                            <div class="col-sm-8">
+                                @Html.EditorFor(model => model.Account, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入帳號" } })
+                            </div>
+                            <div class="col-sm-2">
+                                @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">密　碼：</label>
+                            <div class="col-sm-8">
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "請輸入密碼" } })
+                            </div>
+                            <div class="col-sm-2">
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <p style="color:red">@Html.ViewBag.Tip</p>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button class="btn btn-primary solid blank" type="submit">登 入</button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="tags-area clearfix">
+                            <div class="share-items pull-right">
+                                <ul class="post-social-icons unstyled">
+                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
