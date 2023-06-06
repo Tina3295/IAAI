@@ -193,5 +193,8 @@ namespace IAAI.Models
         [Range(1, 12, ErrorMessage = "月份須介於1~12之間")]
         [Display(Name = "迄月3")]
         public int? EndMonth3 { get; set; }
+
+
+        public virtual ICollection<Forums> Forums { get; set; }
     }
 }

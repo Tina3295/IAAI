@@ -3592,3 +3592,11 @@ em {
 }
 
 
+.respon {
+    margin: 20px auto;
+    display: inline-block;
+    padding: 3px 8px;
+    background: #b2b2b2;
+    color: white;
+    border-radius: 2px;
+}

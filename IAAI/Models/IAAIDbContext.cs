@@ -21,6 +21,7 @@ namespace IAAI.Models
         // Code First 模型的詳細資訊，請參閱 http://go.microsoft.com/fwlink/?LinkId=390109。
 
         public virtual DbSet<ForumMember> ForumMembers { get; set; }
+        public virtual DbSet<Forums> Forums { get; set; }
     }
 
     //public class MyEntity

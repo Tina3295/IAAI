@@ -1,0 +1,64 @@
+﻿@model IEnumerable<IAAI.Models.Forums>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Front_Layout.cshtml";
+    ViewBag.Row = "<li>會員專區</li><li><a href='#'>討論區</a></li>";
+}
+
+
+<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+    <div class="sidebar sidebar-right">
+        <div class="widget">
+            <h2 class="widget-title"><i class="fa fa-folder-open-o">&nbsp;</i>會員專區</h2>
+            <ul class="arrow nav nav-tabs nav-stacked">
+                <li class="active"><a href="~/Forums/Index">討論區</a></li>
+                <li><a href="">修改個人資料</a></li>
+                <li><a href="~/ForumMembers/Logout">登出</a></li>
+            </ul>
+        </div>
+        <!-- Categories end -->
+    </div>
+    <!-- Sidebar end -->
+</div>
+
+<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+    <h2 class="page-title">討論區</h2>
+    <hr class="botmargin-min">
+    <!--Login Start-->
+    <a class="respon" href="~/Forums/Create">張貼文章</a>
+    <table class="table table-striped career-table download-table">
+
+        <thead>
+            <tr>
+                <th><span class="text-left">標題</span></th>
+                <th>發表人</th>
+                <th>最新回覆人</th>
+                <th>回覆數</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <span class="text-left"><a href="~/Forums/Details/@Html.DisplayFor(modelItem => item.ForumId)">@Html.DisplayFor(modelItem => item.Title)</a></span>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ForumMember.Account)<br>
+                        @Html.DisplayFor(modelItem => item.InitDate)
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+
+

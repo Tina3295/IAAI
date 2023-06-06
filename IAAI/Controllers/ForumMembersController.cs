@@ -313,47 +313,6 @@ namespace IAAI.Controllers
         }
 
 
-
-
-
-
-
-
-        // GET: ForumMembers
-        public ActionResult Index()
-        {
-            return View(_db.ForumMembers.ToList());
-        }
-
-
-
-
-        // GET: ForumMembers/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ForumMember forumMember = _db.ForumMembers.Find(id);
-            if (forumMember == null)
-            {
-                return HttpNotFound();
-            }
-            return View(forumMember);
-        }
-
-        // POST: ForumMembers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            ForumMember forumMember = _db.ForumMembers.Find(id);
-            _db.ForumMembers.Remove(forumMember);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

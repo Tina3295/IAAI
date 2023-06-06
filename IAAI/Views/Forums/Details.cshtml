@@ -1,0 +1,51 @@
+﻿@model IAAI.Models.Forums
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/Front_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Forums</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ForumMember.Account)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ForumMember.Account)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ContentHtml)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContentHtml)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InitDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InitDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ForumId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
