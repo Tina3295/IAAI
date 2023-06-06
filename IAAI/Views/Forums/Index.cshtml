@@ -1,5 +1,4 @@
-﻿@model IEnumerable<IAAI.Models.Forums>
-
+﻿@model MvcPaging.IPagedList<IAAI.Models.ViewModel.ForumIndex>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/Front_Layout.cshtml";
@@ -45,17 +44,32 @@
                         <span class="text-left"><a href="~/Forums/Details/@Html.DisplayFor(modelItem => item.ForumId)">@Html.DisplayFor(modelItem => item.Title)</a></span>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ForumMember.Account)<br>
+                        @Html.DisplayFor(modelItem => item.Author)<br>
                         @Html.DisplayFor(modelItem => item.InitDate)
                     </td>
                     <td>
+                        @Html.DisplayFor(modelItem => item.LatestResponder)<br>
+                        @Html.DisplayFor(modelItem => item.LatestInitDate)
                     </td>
                     <td>
+                        @Html.DisplayFor(modelItem => item.RepliesCount)
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+    <!--分頁開始-->
+    <div class="paging text-center">
+        <div class="pages">
+
+            <div class="pagination">
+                @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount)
+            </div>
+            <div class="page_boxR"> 資料筆數：@ViewBag.Count  　</div>
+
+        </div>
+    </div>
+    <!--分頁結束-->
 </div>
 
 

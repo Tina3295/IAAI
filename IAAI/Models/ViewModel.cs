@@ -23,6 +23,15 @@ namespace IAAI.Models
             public string Password { get; set; }
         }
 
-
+        public class ForumIndex
+        {
+            public int ForumId { get; set; }
+            public string Title { get; set; }
+            public string Author { get; set; }
+            public string InitDate { get; set; }
+            public string LatestResponder { get; set; }
+            public string LatestInitDate { get; set; }
+            public int RepliesCount { get; set; }
+        }
     }
 }

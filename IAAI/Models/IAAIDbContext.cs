@@ -22,6 +22,7 @@ namespace IAAI.Models
 
         public virtual DbSet<ForumMember> ForumMembers { get; set; }
         public virtual DbSet<Forums> Forums { get; set; }
+        public virtual DbSet<ForumReply> ForumReplies { get; set; }
     }
 
     //public class MyEntity

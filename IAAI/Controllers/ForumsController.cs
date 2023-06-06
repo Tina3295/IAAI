@@ -8,18 +8,40 @@ using System.Web;
 using System.Web.Mvc;
 using Ganss.Xss;
 using IAAI.Models;
+using static IAAI.Models.ViewModel;
+using MvcPaging;
 
 namespace IAAI.Controllers
 {
     public class ForumsController : Controller
     {
-        private IAAIDbContext db = new IAAIDbContext();
+        private IAAIDbContext _db = new IAAIDbContext();
+        private const int DefaultPageSize = 2;
 
         // GET: Forums
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            var forums = db.Forums.Include(f => f.ForumMember);
-            return View(forums.ToList());
+            int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
+            ViewBag.Count = _db.Forums.Count();
+
+            var forums = _db.Forums.ToList().Select(f =>
+            {
+                var latestReply = _db.ForumReplies.Where(r => r.ForumId == f.ForumId).OrderByDescending(r=>r.InitDate).FirstOrDefault();
+                var forumMember = latestReply != null ? _db.ForumMembers.FirstOrDefault(m => m.ForumMemberId == latestReply.ForumMemberId) : null;
+
+                return new ForumIndex
+                {
+                    ForumId = f.ForumId,
+                    Title = f.Title,
+                    Author = f.ForumMember.Name,
+                    InitDate = f.InitDate?.ToString("yyyy/MM/dd"),
+                    LatestResponder = forumMember?.Name,
+                    LatestInitDate = latestReply?.InitDate?.ToString("yyyy/MM/dd"),
+                    RepliesCount = _db.ForumReplies.Count(r => r.ForumId == f.ForumId)
+                };
+            });
+
+            return View(forums.OrderByDescending(p => p.InitDate).ToPagedList(currentPageIndex, DefaultPageSize));
         }
 
         // GET: Forums/Details/5
@@ -29,7 +51,7 @@ namespace IAAI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Forums forums = db.Forums.Find(id);
+            Forums forums = _db.Forums.Find(id);
             if (forums == null)
             {
                 return HttpNotFound();
@@ -61,8 +83,8 @@ namespace IAAI.Controllers
                 forums.ContentHtml = sanitizer.Sanitize(forums.ContentHtml);
                 forums.InitDate = DateTime.Now;
 
-                db.Forums.Add(forums);
-                db.SaveChanges();
+                _db.Forums.Add(forums);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -76,12 +98,12 @@ namespace IAAI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Forums forums = db.Forums.Find(id);
+            Forums forums = _db.Forums.Find(id);
             if (forums == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ForumMemberId = new SelectList(db.ForumMembers, "ForumMemberId", "Account", forums.ForumMemberId);
+            ViewBag.ForumMemberId = new SelectList(_db.ForumMembers, "ForumMemberId", "Account", forums.ForumMemberId);
             return View(forums);
         }
 
@@ -94,11 +116,11 @@ namespace IAAI.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(forums).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(forums).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ForumMemberId = new SelectList(db.ForumMembers, "ForumMemberId", "Account", forums.ForumMemberId);
+            ViewBag.ForumMemberId = new SelectList(_db.ForumMembers, "ForumMemberId", "Account", forums.ForumMemberId);
             return View(forums);
         }
 
@@ -109,7 +131,7 @@ namespace IAAI.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Forums forums = db.Forums.Find(id);
+            Forums forums = _db.Forums.Find(id);
             if (forums == null)
             {
                 return HttpNotFound();
@@ -122,9 +144,9 @@ namespace IAAI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Forums forums = db.Forums.Find(id);
-            db.Forums.Remove(forums);
-            db.SaveChanges();
+            Forums forums = _db.Forums.Find(id);
+            _db.Forums.Remove(forums);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -132,7 +154,7 @@ namespace IAAI.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

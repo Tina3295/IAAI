@@ -69,6 +69,9 @@
       <HintPath>..\packages\HtmlSanitizer.8.0.645\lib\net461\HtmlSanitizer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MvcPaging, Version=2.1.13.46, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvcPaging.2.1.13\lib\net40\MvcPaging.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -186,8 +189,17 @@
     <Compile Include="Migrations\202306060435227_renameForums.Designer.cs">
       <DependentUpon>202306060435227_renameForums.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306060816494_addForumReplyTable.cs" />
+    <Compile Include="Migrations\202306060816494_addForumReplyTable.Designer.cs">
+      <DependentUpon>202306060816494_addForumReplyTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306060848432_correctForumMemberIdInt.cs" />
+    <Compile Include="Migrations\202306060848432_correctForumMemberIdInt.Designer.cs">
+      <DependentUpon>202306060848432_correctForumMemberIdInt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\EnumList.cs" />
+    <Compile Include="Models\ForumReply.cs" />
     <Compile Include="Models\Forums.cs" />
     <Compile Include="Models\IAAIDbContext.cs" />
     <Compile Include="Models\ForumMember.cs" />
@@ -1102,6 +1114,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306060435227_renameForums.resx">
       <DependentUpon>202306060435227_renameForums.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306060816494_addForumReplyTable.resx">
+      <DependentUpon>202306060816494_addForumReplyTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306060848432_correctForumMemberIdInt.resx">
+      <DependentUpon>202306060848432_correctForumMemberIdInt.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
