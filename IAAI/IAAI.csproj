@@ -167,6 +167,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\CMS\CMSAreaRegistration.cs" />
+    <Compile Include="Areas\CMS\Controllers\AdminsController.cs" />
     <Compile Include="Controllers\ForumMembersController.cs" />
     <Compile Include="Controllers\ForumsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -197,12 +199,22 @@
     <Compile Include="Migrations\202306060848432_correctForumMemberIdInt.Designer.cs">
       <DependentUpon>202306060848432_correctForumMemberIdInt.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306181524172_addAdminTable.cs" />
+    <Compile Include="Migrations\202306181524172_addAdminTable.Designer.cs">
+      <DependentUpon>202306181524172_addAdminTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306181550335_addPermissionTable.cs" />
+    <Compile Include="Migrations\202306181550335_addPermissionTable.Designer.cs">
+      <DependentUpon>202306181550335_addPermissionTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\EnumList.cs" />
     <Compile Include="Models\ForumReply.cs" />
     <Compile Include="Models\Forums.cs" />
     <Compile Include="Models\IAAIDbContext.cs" />
     <Compile Include="Models\ForumMember.cs" />
+    <Compile Include="Models\Permission.cs" />
     <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -957,6 +969,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\CMS\Data\" />
     <Folder Include="Upload\ForumPicture\" />
   </ItemGroup>
   <ItemGroup>
@@ -969,6 +982,15 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="Areas\CMS\Views\web.config" />
+    <Content Include="Areas\CMS\Views\Admins\Create.cshtml" />
+    <Content Include="Areas\CMS\Views\Admins\Delete.cshtml" />
+    <Content Include="Areas\CMS\Views\Admins\Details.cshtml" />
+    <Content Include="Areas\CMS\Views\Admins\Edit.cshtml" />
+    <Content Include="Areas\CMS\Views\Admins\Index.cshtml" />
+    <Content Include="Areas\CMS\Views\Shared\Back_Layout.cshtml" />
+    <Content Include="Areas\CMS\Views\Admins\Login.cshtml" />
+    <Content Include="Areas\CMS\Views\Shared\_CssAndJs.cshtml" />
     <None Include="packages.config" />
     <Content Include="Scripts\vendor\apexcharts\locales\ar.json" />
     <Content Include="Scripts\vendor\apexcharts\locales\ca.json" />
@@ -1120,6 +1142,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306060848432_correctForumMemberIdInt.resx">
       <DependentUpon>202306060848432_correctForumMemberIdInt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306181524172_addAdminTable.resx">
+      <DependentUpon>202306181524172_addAdminTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306181550335_addPermissionTable.resx">
+      <DependentUpon>202306181550335_addPermissionTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

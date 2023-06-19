@@ -118,3 +118,5 @@ C:\Users\user\source\repos\IAAI\IAAI\bin\System.Text.Encoding.CodePages.xml
 C:\Users\user\source\repos\IAAI\IAAI\obj\Debug\IAAI.Migrations.addForumReplyTable.resources
 C:\Users\user\source\repos\IAAI\IAAI\obj\Debug\IAAI.Migrations.correctForumMemberIdInt.resources
 C:\Users\user\source\repos\IAAI\IAAI\bin\MvcPaging.dll
+C:\Users\user\source\repos\IAAI\IAAI\obj\Debug\IAAI.Migrations.addAdminTable.resources
+C:\Users\user\source\repos\IAAI\IAAI\obj\Debug\IAAI.Migrations.addPermissionTable.resources
