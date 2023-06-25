@@ -172,6 +172,7 @@
     <Compile Include="Controllers\ForumMembersController.cs" />
     <Compile Include="Controllers\ForumsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Filter\PermissionFilters.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -731,6 +732,8 @@
     <Content Include="Scripts\ckeditor\skins\moono-lisa\images\spinner.gif" />
     <Content Include="Scripts\ckeditor\styles.js" />
     <Content Include="Scripts\ckeditor\vendor\promise.js" />
+    <Content Include="Scripts\dist\tree.js" />
+    <Content Include="Scripts\dist\tree.min.js" />
     <Content Include="Scripts\js\bootstrap.min.js" />
     <Content Include="Scripts\js\custom.js" />
     <Content Include="Scripts\js\gmap3.min.js" />
@@ -1117,6 +1120,8 @@
     <Content Include="Scripts\ckeditor\samples\toolbarconfigurator\lib\codemirror\LICENSE" />
     <Content Include="Scripts\ckeditor\SECURITY.md" />
     <Content Include="Scripts\ckeditor\skins\moono-lisa\readme.md" />
+    <Content Include="Scripts\dist\tree.js.map" />
+    <Content Include="Scripts\dist\tree.min.js.map" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\vendor\tinymce\tinymce.d.ts" />

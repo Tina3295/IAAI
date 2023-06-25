@@ -9,6 +9,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using IAAI.Filter;
 using IAAI.Models;
 using Newtonsoft.Json;
 
@@ -42,7 +43,6 @@ namespace IAAI.Areas.CMS.Controllers
                 {
                     admin.Password = BitConverter.ToString(MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(admin.Password))).Replace("-", null);
                     admin.InitDate = DateTime.Now;
-                    admin.Permission = "先寫死";
                     _db.Admins.Add(admin);
                     _db.SaveChanges();
                     return RedirectToAction("Index");
@@ -151,6 +151,7 @@ namespace IAAI.Areas.CMS.Controllers
 
 
         // GET: CMS/Admins
+        [PermissionFilters]
         public ActionResult Index()
         {
             return View(_db.Admins.ToList());

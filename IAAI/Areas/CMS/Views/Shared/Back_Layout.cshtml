@@ -206,7 +206,6 @@
 
 
                 <li class="nav-item dropdown pe-3">
-
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                         <img src="~/img/backend/@profilePicture" alt="Profile" class="rounded-circle">
                         <span class="d-none d-md-block dropdown-toggle ps-2">
@@ -278,6 +277,13 @@
                     <span>Dashboard</span>
                 </a>
             </li><!-- End Dashboard Nav -->
+
+
+
+
+
+
+
 
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
@@ -356,6 +362,10 @@
                     </li>
                 </ul>
             </li><!-- End Components Nav -->
+
+
+            @Html.Raw(ViewBag.menu)
+
 
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
@@ -587,7 +597,7 @@
     <script src="~/Scripts/js/main.js"></script>
     <script src="~/Scripts/js/jquery.min.js"></script>
 
-
+    <script src="~/Scripts/dist/tree.min.js"></script>
 
 
 
