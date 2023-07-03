@@ -994,6 +994,7 @@
     <Content Include="Areas\CMS\Views\Shared\Back_Layout.cshtml" />
     <Content Include="Areas\CMS\Views\Admins\Login.cshtml" />
     <Content Include="Areas\CMS\Views\Shared\_CssAndJs.cshtml" />
+    <Content Include="Areas\CMS\Views\Admins\LoginSuccess.cshtml" />
     <None Include="packages.config" />
     <Content Include="Scripts\vendor\apexcharts\locales\ar.json" />
     <Content Include="Scripts\vendor\apexcharts\locales\ca.json" />

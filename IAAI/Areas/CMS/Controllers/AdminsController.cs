@@ -20,6 +20,7 @@ namespace IAAI.Areas.CMS.Controllers
         private IAAIDbContext _db = new IAAIDbContext();
 
         #region 新增管理者
+        [PermissionFilters]
         public ActionResult Create()
         {
             List<Permission> permissions = _db.Permissions.ToList();
@@ -102,7 +103,21 @@ namespace IAAI.Areas.CMS.Controllers
                         //設定驗證票(夾帶資料，cookie 命名)
                         SetAuthenTicket(userData, admin.Account);
 
-                        return RedirectToAction("Index");
+
+                        //找到有管理權限的首頁
+                        //string[] indexUrl = new string[2];
+                        //string[] allowedPermissions = admin.Permission.Split(',');
+                        //foreach (string permission in allowedPermissions)
+                        //{
+                        //    string url = _db.Permissions.FirstOrDefault(p => p.Code == permission).URL;
+                        //    if (url.Contains("Index"))
+                        //    {
+                        //        indexUrl = url.TrimStart('/').Split('/');
+                        //        break;
+                        //    }
+                        //}
+
+                        return RedirectToAction("LoginSuccess");
                     }
                     else
                     {
@@ -135,22 +150,41 @@ namespace IAAI.Areas.CMS.Controllers
         #endregion
 
 
+        #region 登入成功畫面
+        [PermissionFilters]
+        public ActionResult LoginSuccess()
+        {
+            return View();
+        }
+        #endregion
 
 
 
+        #region 登出
+        public ActionResult Logout()
+        {
+            Session.Abandon();
+            Session.RemoveAll();
+
+            // 清除authentication cookie
+            HttpCookie cookie1 = new HttpCookie(FormsAuthentication.FormsCookieName, "");
+            cookie1.Expires = DateTime.Now.AddYears(-1);
+            Response.Cookies.Add(cookie1);
+
+            //建立一個同名的 Cookie 來覆蓋原本的 Cookie
+            HttpCookie authenticationCookie = new HttpCookie(FormsAuthentication.FormsCookieName, "");
+            authenticationCookie.Expires = DateTime.Now.AddYears(-1);
+            Response.Cookies.Add(authenticationCookie);
+
+            // 執行登出
+            FormsAuthentication.SignOut();
+
+            return RedirectToAction("Login");
+        }
+        #endregion
 
 
 
-
-
-
-
-
-
-
-
-
-        // GET: CMS/Admins
         [PermissionFilters]
         public ActionResult Index()
         {
@@ -190,6 +224,7 @@ namespace IAAI.Areas.CMS.Controllers
         //}
 
         // GET: CMS/Admins/Edit/5
+        [PermissionFilters]
         public ActionResult Edit(int? id)
         {
             if (id == null)

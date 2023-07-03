@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using System.Web.Security;
 
 namespace IAAI.Filter
@@ -31,6 +32,22 @@ namespace IAAI.Filter
             StringBuilder sbMenu = new StringBuilder();
             BuildMenu(sbMenu, menuData, allowedPermissions);
             filterContext.Controller.ViewBag.menu = sbMenu.ToString();
+
+
+
+
+            // 檢查是否具有訪問權限
+            string controllerName = filterContext.RouteData.Values["controller"].ToString();
+            string actionName = filterContext.RouteData.Values["action"].ToString();
+
+            if (!HasPermission(controllerName, actionName, menuData, allowedPermissions))
+            {
+                // 沒有權限
+                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Home", action = "Unauthorized" }));
+                return;
+            }
+
+            base.OnActionExecuting(filterContext);
         }
 
 
@@ -84,12 +101,42 @@ namespace IAAI.Filter
                 if (allowedPermissions.Any(p => p.StartsWith(item.id)))
                 {
                     sbMenu.AppendLine("<li>");
-                    sbMenu.AppendLine($"<a href='{item.url}'>");
+                    sbMenu.AppendLine($"<a href='/CMS{item.url}'>");
                     sbMenu.AppendLine($"<span>{item.text}</span>");
                     sbMenu.AppendLine("</a>");
                     sbMenu.AppendLine("</li>");
                 }
             }
+        }
+
+
+
+        private bool HasPermission(string controller, string action, dynamic menuData, string[] allowedPermissions)
+        {
+            string requiredPermission = $"/{controller}/{action}";
+
+            if (requiredPermission == "/Admins/LoginSuccess")
+            {
+                return true;
+            }
+
+            foreach (var item in menuData)
+            {
+                if (item.url == requiredPermission && allowedPermissions.Any(p => p.StartsWith(item.id)))
+                {
+                    return true;
+                }
+                else if (item.children != null)
+                {
+                    var children = item.children as IEnumerable<dynamic>;
+                    if (children != null && HasPermission(controller, action, children, allowedPermissions))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }
