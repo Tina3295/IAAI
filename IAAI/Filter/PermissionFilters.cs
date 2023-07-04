@@ -34,8 +34,6 @@ namespace IAAI.Filter
             filterContext.Controller.ViewBag.menu = sbMenu.ToString();
 
 
-
-
             // 檢查是否具有訪問權限
             string controllerName = filterContext.RouteData.Values["controller"].ToString();
             string actionName = filterContext.RouteData.Values["action"].ToString();
@@ -43,15 +41,23 @@ namespace IAAI.Filter
             if (!HasPermission(controllerName, actionName, menuData, allowedPermissions))
             {
                 // 沒有權限
-                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Home", action = "Unauthorized" }));
+                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Admins", action = "UnAuthorized" }));
                 return;
             }
+
+
+            //Title
+            string controllerAction = $"/{controllerName}/{actionName}";
+            filterContext.Controller.ViewBag.Title = _db.Permissions.FirstOrDefault(p => p.URL == controllerAction).Subject;
+            //Subtitle
+            string menuPath = Subtitle(menuData, controllerAction);
+            filterContext.Controller.ViewBag.Subtitle = menuPath;
 
             base.OnActionExecuting(filterContext);
         }
 
 
-        //全部權限
+        #region 全部權限
         private object GetNode(IEnumerable<Permission> permissions)
         {
             return permissions.Select(permission => new
@@ -62,9 +68,9 @@ namespace IAAI.Filter
                 children = permission.Permissions.Count > 0 ? GetNode(permission.Permissions) : null
             });
         }
+        #endregion
 
-
-        //第一層選單
+        #region 第一層選單
         private void BuildMenu(StringBuilder sbMenu, dynamic menuData, string[] allowedPermissions)
         {
             foreach (var item in menuData)
@@ -91,9 +97,9 @@ namespace IAAI.Filter
                 }
             }
         }
+        #endregion
 
-
-        //第二層選單
+        #region 第二層選單
         private void BuildSubMenu(StringBuilder sbMenu, IEnumerable<dynamic> menuData, string[] allowedPermissions)
         {
             foreach (var item in menuData)
@@ -108,9 +114,9 @@ namespace IAAI.Filter
                 }
             }
         }
+        #endregion
 
-
-
+        #region 是否有瀏覽權限
         private bool HasPermission(string controller, string action, dynamic menuData, string[] allowedPermissions)
         {
             string requiredPermission = $"/{controller}/{action}";
@@ -138,5 +144,35 @@ namespace IAAI.Filter
 
             return false;
         }
+        #endregion
+
+        #region 副標題
+        private string Subtitle(dynamic menuData, string requiredPermission, string path = "")
+        {
+            foreach (var item in menuData)
+            {
+                if (item.url == requiredPermission)
+                {
+                    //return $"{path}<li class='breadcrumb-item'>{item.text}</li>";
+                    return path;
+                }
+                else if (item.children != null)
+                {
+                    var children = item.children as IEnumerable<dynamic>;
+                    if (children != null)
+                    {
+                        string newPath = item.url != null ? $"{path}<li class='breadcrumb-item'><a href='/CMS{item.url}'>{item.text}</a></li>" : $"{path}<li class='breadcrumb-item'>{item.text}</li>";
+                        var foundPath = Subtitle(children, requiredPermission, newPath);
+                        if (!string.IsNullOrEmpty(foundPath))
+                        {
+                            return foundPath;
+                        }
+                    }
+                }
+            }
+
+            return string.Empty;
+        }
+        #endregion
     }
 }

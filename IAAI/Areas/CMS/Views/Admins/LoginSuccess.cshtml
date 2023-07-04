@@ -1,8 +1,8 @@
 ﻿
 @{
-    ViewBag.Title = "LoginSuccess";
+    ViewBag.Title = "登入成功";
     Layout = "~/Areas/CMS/Views/Shared/Back_Layout.cshtml";
 }
 
-<h2>LoginSuccess</h2>
+<h2 style="padding-top:10px">Welcome ~ @(System.Web.HttpContext.Current.User.Identity.Name)</h2>
 

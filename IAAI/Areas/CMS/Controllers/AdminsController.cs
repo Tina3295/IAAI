@@ -159,6 +159,13 @@ namespace IAAI.Areas.CMS.Controllers
         #endregion
 
 
+        #region 401
+        public ActionResult UnAuthorized()
+        {
+            return View();
+        }
+        #endregion
+
 
         #region 登出
         public ActionResult Logout()
@@ -184,12 +191,19 @@ namespace IAAI.Areas.CMS.Controllers
         #endregion
 
 
-
+        #region 管理者清單
         [PermissionFilters]
         public ActionResult Index()
         {
             return View(_db.Admins.ToList());
         }
+        #endregion
+
+
+
+
+
+
 
         // GET: CMS/Admins/Details/5
         public ActionResult Details(int? id)
@@ -236,6 +250,15 @@ namespace IAAI.Areas.CMS.Controllers
             {
                 return HttpNotFound();
             }
+
+            List<Permission> permissions = _db.Permissions.ToList();
+            var roots = permissions.Where(p => p.RootId == null);
+            var tree = GetNode(roots);
+            ViewBag.tree = JsonConvert.SerializeObject(tree);
+
+            string[] adminPermission = admin.Permission.Split(',');
+            ViewBag.adminPermission = JsonConvert.SerializeObject(adminPermission);
+
             return View(admin);
         }
 
