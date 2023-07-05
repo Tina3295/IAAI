@@ -15,12 +15,14 @@ using Newtonsoft.Json;
 
 namespace IAAI.Areas.CMS.Controllers
 {
+    [Authorize]
+    [PermissionFilters]
     public class AdminsController : Controller
     {
         private IAAIDbContext _db = new IAAIDbContext();
 
         #region 新增管理者
-        [PermissionFilters]
+        
         public ActionResult Create()
         {
             List<Permission> permissions = _db.Permissions.ToList();
@@ -54,6 +56,12 @@ namespace IAAI.Areas.CMS.Controllers
                 }
             }
 
+            List<Permission> permissions = _db.Permissions.ToList();
+            var roots = permissions.Where(p => p.RootId == null);
+            var tree = GetNode(roots);
+            ViewBag.tree = JsonConvert.SerializeObject(tree);
+            ViewBag.SelectedPermissions = JsonConvert.SerializeObject(admin.Permission.Split(','));
+
             return View(admin);
         }
         #endregion
@@ -73,12 +81,14 @@ namespace IAAI.Areas.CMS.Controllers
 
 
         #region 管理者登入
+        [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Login(Admin login)
         {
@@ -151,7 +161,6 @@ namespace IAAI.Areas.CMS.Controllers
 
 
         #region 登入成功畫面
-        [PermissionFilters]
         public ActionResult LoginSuccess()
         {
             return View();
@@ -168,6 +177,7 @@ namespace IAAI.Areas.CMS.Controllers
 
 
         #region 登出
+        [AllowAnonymous]
         public ActionResult Logout()
         {
             Session.Abandon();
@@ -192,7 +202,6 @@ namespace IAAI.Areas.CMS.Controllers
 
 
         #region 管理者清單
-        [PermissionFilters]
         public ActionResult Index()
         {
             return View(_db.Admins.ToList());
@@ -201,44 +210,6 @@ namespace IAAI.Areas.CMS.Controllers
 
 
 
-
-
-
-
-        // GET: CMS/Admins/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Admin admin = _db.Admins.Find(id);
-            if (admin == null)
-            {
-                return HttpNotFound();
-            }
-            return View(admin);
-        }
-
-
-
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "AdminId,Account,Password,UserName,ProfilePicture,InitDate,Permission")] Admin admin)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _db.Admins.Add(admin);
-        //        _db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View(admin);
-        //}
-
-        // GET: CMS/Admins/Edit/5
-        [PermissionFilters]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -262,9 +233,6 @@ namespace IAAI.Areas.CMS.Controllers
             return View(admin);
         }
 
-        // POST: CMS/Admins/Edit/5
-        // 若要免於大量指派 (overposting) 攻擊，請啟用您要繫結的特定屬性，
-        // 如需詳細資料，請參閱 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "AdminId,Account,Password,UserName,ProfilePicture,InitDate,Permission")] Admin admin)
@@ -278,22 +246,8 @@ namespace IAAI.Areas.CMS.Controllers
             return View(admin);
         }
 
-        // GET: CMS/Admins/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Admin admin = _db.Admins.Find(id);
-            if (admin == null)
-            {
-                return HttpNotFound();
-            }
-            return View(admin);
-        }
 
-        // POST: CMS/Admins/Delete/5
+        #region 刪除用戶
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -303,14 +257,6 @@ namespace IAAI.Areas.CMS.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        #endregion
     }
 }

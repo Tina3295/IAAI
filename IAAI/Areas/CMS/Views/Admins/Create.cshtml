@@ -2,6 +2,11 @@
 
 @{
     Layout = "~/Areas/CMS/Views/Shared/Back_Layout.cshtml";
+    string selectedPermissions = "[]";
+    if (ViewBag.SelectedPermissions != null)
+    {
+        selectedPermissions = ViewBag.SelectedPermissions;
+    }
 }
 
 
@@ -19,6 +24,9 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Account, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Account, "", new { @class = "text-danger" })
+                <div style="color:red">
+                    @ViewBag.Tip
+                </div>
             </div>
         </div>
 
@@ -52,10 +60,7 @@
             </div>
         </div>
 
-        <div style="display:flex;justify-content:space-between">
-            <div style="color:red">
-                @ViewBag.Tip
-            </div>
+        <div style="display:flex;justify-content:end">
             <div>
                 @Html.ActionLink("返回", "Index")
             </div>
@@ -68,15 +73,22 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+<script>
+    function decodeHtml(html) {
+        var txt = document.createElement("textarea");
+        txt.innerHTML = html;
+        return txt.value;
+    }
+
         // prettier-ignore
-        let data = @Html.Raw(ViewBag.tree);
+    let data = @Html.Raw(ViewBag.tree);
+    let selectedPermissions = decodeHtml('@selectedPermissions');
 
         let tree = new Tree('.treecontainer', {
             data: data,
             closeDepth: 3,
             loaded: function () {
-                this.values = ['0-0-0', '0-1-1'];
+                this.values = JSON.parse(selectedPermissions);
                 console.log(this.selectedNodes);
                 console.log(this.values);
                 this.disables = ['0-0-0', '0-0-1', '0-0-2']
@@ -86,5 +98,5 @@
                 $("#Permission").val(this.values)
             }
         })
-    </script>
+</script>
 }

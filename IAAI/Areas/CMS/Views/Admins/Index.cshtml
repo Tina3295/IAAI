@@ -2,11 +2,19 @@
 
 @{
     Layout = "~/Areas/CMS/Views/Shared/Back_Layout.cshtml";
+    var formsIdentity = HttpContext.Current.User.Identity as FormsIdentity;
+    string[] user = formsIdentity.Ticket.UserData.Split(';');
+    string[] permission = user[3].Split(',');
 }
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@if (permission.Contains("E01-1"))
+{
+    <div style="margin:15px 0px">
+        <a href='/CMS/Admins/Create' class="btn btn-primary btn-sm">新增用戶</a>
+    </div>
+}
+
+
 <table class="table">
     <tr>
         <th>
@@ -45,10 +53,27 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Permission)
             </td>
+
+
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.AdminId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.AdminId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.AdminId })
+                <div style="display: flex; justify-content: space-around; flex-wrap:wrap">
+                    @if (permission.Contains("E01-2"))
+                    {
+                        using (Html.BeginForm("Edit", "Admins", new { id = item.AdminId }, FormMethod.Get))
+                        {
+                            <button type="submit" class="btn btn-outline-primary btn-sm">編輯</button>
+                        }
+                    }
+
+                    @if (permission.Contains("E01-3"))
+                    {
+                        using (Html.BeginForm("Delete", "Admins", new { id = item.AdminId }, FormMethod.Post, new { onsubmit = "return confirm('您確定要刪除用戶嗎？');" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-outline-danger btn-sm">刪除</button>
+                        }
+                    }
+                </div>
             </td>
         </tr>
     }

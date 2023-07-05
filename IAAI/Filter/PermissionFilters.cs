@@ -18,6 +18,12 @@ namespace IAAI.Filter
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            if (!HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                filterContext.Controller.ViewBag.menu = "";
+                return;
+            }
+
             var formsIdentity = HttpContext.Current.User.Identity as FormsIdentity;
             string[] user = formsIdentity.Ticket.UserData.Split(';');
             string permission = user[3];
@@ -48,7 +54,8 @@ namespace IAAI.Filter
 
             //Title
             string controllerAction = $"/{controllerName}/{actionName}";
-            filterContext.Controller.ViewBag.Title = _db.Permissions.FirstOrDefault(p => p.URL == controllerAction).Subject;
+            filterContext.Controller.ViewBag.Title = _db.Permissions.FirstOrDefault(p => p.URL == controllerAction)?.Subject;
+
             //Subtitle
             string menuPath = Subtitle(menuData, controllerAction);
             filterContext.Controller.ViewBag.Subtitle = menuPath;
