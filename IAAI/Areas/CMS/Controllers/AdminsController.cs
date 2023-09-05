@@ -46,6 +46,7 @@ namespace IAAI.Areas.CMS.Controllers
                 {
                     admin.Password = BitConverter.ToString(MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(admin.Password))).Replace("-", null);
                     admin.InitDate = DateTime.Now;
+                    admin.ProfilePicture = "";
                     _db.Admins.Add(admin);
                     _db.SaveChanges();
                     return RedirectToAction("Index");
@@ -162,14 +163,6 @@ namespace IAAI.Areas.CMS.Controllers
 
         #region 登入成功畫面
         public ActionResult LoginSuccess()
-        {
-            return View();
-        }
-        #endregion
-
-
-        #region 401
-        public ActionResult UnAuthorized()
         {
             return View();
         }

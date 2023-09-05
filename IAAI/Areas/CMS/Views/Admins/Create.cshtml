@@ -88,7 +88,7 @@
             data: data,
             closeDepth: 3,
             loaded: function () {
-                this.values = JSON.parse(selectedPermissions);
+                this.values = @Html.Raw(ViewBag.selectedPermissions);
                 console.log(this.selectedNodes);
                 console.log(this.values);
                 this.disables = ['0-0-0', '0-0-1', '0-0-2']

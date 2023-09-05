@@ -10,6 +10,7 @@ using Ganss.Xss;
 using IAAI.Models;
 using static IAAI.Models.ViewModel;
 using MvcPaging;
+using System.IO;
 
 namespace IAAI.Controllers
 {
@@ -90,6 +91,7 @@ namespace IAAI.Controllers
 
             return View(forums);
         }
+
 
         // GET: Forums/Edit/5
         public ActionResult Edit(int? id)

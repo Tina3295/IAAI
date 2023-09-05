@@ -44,10 +44,14 @@ namespace IAAI.Filter
             string controllerName = filterContext.RouteData.Values["controller"].ToString();
             string actionName = filterContext.RouteData.Values["action"].ToString();
 
+            if (controllerName == "Admins" && actionName == "Logout")
+            {
+                return;
+            }
             if (!HasPermission(controllerName, actionName, menuData, allowedPermissions))
             {
                 // 沒有權限
-                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Admins", action = "UnAuthorized" }));
+                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Home", action = "UnAuthorized" }));
                 return;
             }
 
